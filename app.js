@@ -231,6 +231,8 @@ function applyStoryCopy() {
 const travelerList = document.querySelector("#travelerList");
 const storyFrame = document.querySelector("#storyFrame");
 const storyCaption = document.querySelector("#storyCaption");
+const bookFit = document.querySelector("#bookFit");
+const bookShell = document.querySelector("#bookShell");
 const storyPrev = document.querySelector("#storyPrev");
 const storyNext = document.querySelector("#storyNext");
 const avatarPin = document.querySelector("#avatarPin");
@@ -266,8 +268,34 @@ let lightboxPointerX = 0;
 let lightboxDidSwipe = false;
 
 function syncMobileLayoutClass() {
-  const viewportWidth = Math.min(window.innerWidth || 0, window.screen?.width || window.innerWidth || 0);
-  document.body.classList.toggle("is-mobile-layout", viewportWidth <= 760);
+  const viewportCandidates = [window.innerWidth, window.visualViewport?.width, window.screen?.width].filter(Boolean);
+  const viewportWidth = Math.min(...viewportCandidates);
+  const isMobile = viewportWidth <= 760;
+  document.documentElement.style.setProperty("--mobile-page-width", `${Math.max(320, viewportWidth - 24)}px`);
+  document.body.classList.toggle("is-mobile-layout", isMobile);
+  requestAnimationFrame(syncMobileFitScale);
+}
+
+function syncMobileFitScale() {
+  if (!bookFit || !bookShell) return;
+  bookShell.style.removeProperty("--mobile-fit-scale");
+  bookFit.style.removeProperty("--mobile-fit-height");
+
+  if (!document.body.classList.contains("is-mobile-layout")) return;
+
+  const visibleWidth = Math.min(
+    window.innerWidth || Infinity,
+    window.visualViewport?.width || Infinity,
+    window.screen?.width || Infinity,
+  );
+  const availableWidth = Math.max(300, visibleWidth - 16);
+  const contentWidth = bookShell.getBoundingClientRect().width;
+  const scale = Math.min(1, availableWidth / contentWidth);
+
+  if (scale < 0.995) {
+    bookShell.style.setProperty("--mobile-fit-scale", String(scale));
+    bookFit.style.setProperty("--mobile-fit-height", `${bookShell.scrollHeight * scale}px`);
+  }
 }
 
 function escapeHtml(value) {
@@ -316,6 +344,7 @@ function renderActiveTraveler() {
   paperMap.dataset.route = activeTraveler.route || "shanghai";
 
   updateMapState();
+  requestAnimationFrame(syncMobileFitScale);
 }
 
 function updateMapState() {
@@ -469,6 +498,8 @@ document.addEventListener("keydown", (event) => {
 storyPrev.addEventListener("click", () => moveStory(-1));
 storyNext.addEventListener("click", () => moveStory(1));
 window.addEventListener("resize", syncMobileLayoutClass);
+window.visualViewport?.addEventListener("resize", syncMobileLayoutClass);
+window.addEventListener("load", syncMobileLayoutClass);
 
 syncMobileLayoutClass();
 applyStoryCopy();
