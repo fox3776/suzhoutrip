@@ -241,6 +241,9 @@ const mapPhotoPanel = document.querySelector("#mapPhotoPanel");
 const photoTitle = document.querySelector("#photoTitle");
 const photoGrid = document.querySelector("#photoGrid");
 const photoClose = document.querySelector("#photoClose");
+const photoLightbox = document.querySelector("#photoLightbox");
+const lightboxImage = document.querySelector("#lightboxImage");
+const lightboxCounter = document.querySelector("#lightboxCounter");
 
 const placePhotos = {
   苏州站: ["苏州站-1.jpeg"],
@@ -256,6 +259,11 @@ const placePhotos = {
 
 let activeTraveler = travelers[0];
 let activeEventIndex = 0;
+let activePlacePhotos = [];
+let activePlaceName = "";
+let activePhotoIndex = 0;
+let lightboxPointerX = 0;
+let lightboxDidSwipe = false;
 
 function escapeHtml(value) {
   return String(value)
@@ -352,13 +360,15 @@ mapHotspots.forEach((hotspot) => {
 
 function showPlacePhotos(place) {
   const photos = placePhotos[place] || [];
+  activePlaceName = place;
+  activePlacePhotos = photos;
   photoTitle.textContent = place;
   mapPhotoPanel.classList.add("open");
   photoGrid.innerHTML = photos.length
     ? photos
         .map(
-          (photo) => `
-            <button class="photo-card" type="button">
+          (photo, index) => `
+            <button class="photo-card" type="button" data-photo-index="${index}">
               <img src="./assets/${photo}" alt="${place} 实拍照片" loading="lazy" />
             </button>
           `,
@@ -372,6 +382,36 @@ function closePlacePhotos() {
   mapHotspots.forEach((item) => item.classList.remove("active"));
 }
 
+function renderLightbox() {
+  const photo = activePlacePhotos[activePhotoIndex];
+  if (!photo) return;
+  lightboxImage.src = `./assets/${photo}`;
+  lightboxImage.alt = `${activePlaceName} 实拍照片`;
+  lightboxCounter.textContent = `${activePhotoIndex + 1} / ${activePlacePhotos.length}`;
+}
+
+function openLightbox(index) {
+  if (!activePlacePhotos.length) return;
+  activePhotoIndex = index;
+  renderLightbox();
+  photoLightbox.classList.add("open");
+  photoLightbox.setAttribute("aria-hidden", "false");
+  document.body.classList.add("is-lightbox-open");
+}
+
+function closeLightbox() {
+  photoLightbox.classList.remove("open");
+  photoLightbox.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("is-lightbox-open");
+}
+
+function moveLightbox(step) {
+  const photoCount = activePlacePhotos.length;
+  if (!photoCount) return;
+  activePhotoIndex = (activePhotoIndex + step + photoCount) % photoCount;
+  renderLightbox();
+}
+
 photoClose.addEventListener("click", (event) => {
   event.stopPropagation();
   closePlacePhotos();
@@ -381,10 +421,44 @@ mapPhotoPanel.addEventListener("click", (event) => {
   event.stopPropagation();
 });
 
+photoGrid.addEventListener("click", (event) => {
+  const card = event.target.closest(".photo-card");
+  if (!card) return;
+  openLightbox(Number(card.dataset.photoIndex || 0));
+});
+
 paperMap.addEventListener("click", () => {
   if (mapPhotoPanel.classList.contains("open")) {
     closePlacePhotos();
   }
+});
+
+photoLightbox.addEventListener("pointerdown", (event) => {
+  lightboxPointerX = event.clientX;
+  lightboxDidSwipe = false;
+});
+
+photoLightbox.addEventListener("pointerup", (event) => {
+  const deltaX = event.clientX - lightboxPointerX;
+  if (Math.abs(deltaX) > 42) {
+    lightboxDidSwipe = true;
+    moveLightbox(deltaX < 0 ? 1 : -1);
+  }
+});
+
+photoLightbox.addEventListener("click", () => {
+  if (lightboxDidSwipe) {
+    lightboxDidSwipe = false;
+    return;
+  }
+  closeLightbox();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (!photoLightbox.classList.contains("open")) return;
+  if (event.key === "Escape") closeLightbox();
+  if (event.key === "ArrowLeft") moveLightbox(-1);
+  if (event.key === "ArrowRight") moveLightbox(1);
 });
 
 storyPrev.addEventListener("click", () => moveStory(-1));

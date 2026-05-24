@@ -2087,6 +2087,57 @@ h1 {
   border-radius: 3px;
 }
 
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(35, 29, 23, 0.88);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  touch-action: pan-y;
+  cursor: zoom-out;
+}
+
+.photo-lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.photo-lightbox img {
+  display: block;
+  max-width: min(100%, 1100px);
+  max-height: calc(100vh - 84px);
+  object-fit: contain;
+  border: 8px solid #fffaf0;
+  border-radius: 6px;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox-counter {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%) rotate(-1deg);
+  padding: 7px 13px;
+  border: 1px solid rgba(92, 72, 48, 0.16);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 250, 240, 0.92);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+body.is-lightbox-open {
+  overflow: hidden;
+}
+
 .photo-empty {
   grid-column: 1 / -1;
   margin: 0;
