@@ -265,6 +265,11 @@ let activePhotoIndex = 0;
 let lightboxPointerX = 0;
 let lightboxDidSwipe = false;
 
+function syncMobileLayoutClass() {
+  const viewportWidth = Math.min(window.innerWidth || 0, window.screen?.width || window.innerWidth || 0);
+  document.body.classList.toggle("is-mobile-layout", viewportWidth <= 760);
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -463,7 +468,9 @@ document.addEventListener("keydown", (event) => {
 
 storyPrev.addEventListener("click", () => moveStory(-1));
 storyNext.addEventListener("click", () => moveStory(1));
+window.addEventListener("resize", syncMobileLayoutClass);
 
+syncMobileLayoutClass();
 applyStoryCopy();
 renderTravelers();
 renderActiveTraveler();

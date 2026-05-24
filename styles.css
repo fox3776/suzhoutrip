@@ -2202,3 +2202,46 @@ body.is-lightbox-open {
     grid-template-columns: 1fr;
   }
 }
+
+body.is-mobile-layout {
+  overflow-x: hidden;
+}
+
+body.is-mobile-layout .book-shell {
+  width: calc(100vw - 24px);
+  max-width: calc(100vw - 24px);
+}
+
+body.is-mobile-layout .cover-panel {
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 18px;
+  min-height: 0;
+  padding: 26px 18px 20px;
+  overflow: visible;
+}
+
+body.is-mobile-layout .cover-copy,
+body.is-mobile-layout .room-board {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+}
+
+body.is-mobile-layout .cover-copy h1 {
+  max-width: 7em;
+  font-size: clamp(36px, 13vw, 54px);
+  line-height: 1.03;
+}
+
+body.is-mobile-layout .room-board {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+body.is-mobile-layout .room-card {
+  min-height: 86px;
+  padding: 14px 8px 10px;
+}
