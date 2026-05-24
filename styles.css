@@ -108,6 +108,10 @@ button {
   z-index: 1;
 }
 
+.cover-mobile-image {
+  display: none;
+}
+
 .eyebrow,
 .section-title span,
 .panel-heading span {
@@ -2244,4 +2248,46 @@ body.is-mobile-layout .room-board {
 body.is-mobile-layout .room-card {
   min-height: 86px;
   padding: 14px 8px 10px;
+}
+
+@media (max-width: 760px) {
+  .cover-panel {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .cover-panel > :not(.cover-mobile-image) {
+    display: none;
+  }
+
+  .cover-mobile-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+}
+
+body.is-mobile-layout .cover-panel {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.is-mobile-layout .cover-panel > :not(.cover-mobile-image) {
+  display: none;
+}
+
+body.is-mobile-layout .cover-mobile-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
 }
