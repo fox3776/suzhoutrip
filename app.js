@@ -343,7 +343,8 @@ function moveStory(step) {
 }
 
 mapHotspots.forEach((hotspot) => {
-  hotspot.addEventListener("click", () => {
+  hotspot.addEventListener("click", (event) => {
+    event.stopPropagation();
     mapHotspots.forEach((item) => item.classList.toggle("active", item === hotspot));
     showPlacePhotos(hotspot.dataset.place);
   });
@@ -366,9 +367,24 @@ function showPlacePhotos(place) {
     : `<p class="photo-empty">${place} 的实拍照片待补。</p>`;
 }
 
-photoClose.addEventListener("click", () => {
+function closePlacePhotos() {
   mapPhotoPanel.classList.remove("open");
   mapHotspots.forEach((item) => item.classList.remove("active"));
+}
+
+photoClose.addEventListener("click", (event) => {
+  event.stopPropagation();
+  closePlacePhotos();
+});
+
+mapPhotoPanel.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+paperMap.addEventListener("click", () => {
+  if (mapPhotoPanel.classList.contains("open")) {
+    closePlacePhotos();
+  }
 });
 
 storyPrev.addEventListener("click", () => moveStory(-1));

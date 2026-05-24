@@ -2106,7 +2106,7 @@ h1 {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .cover-panel {
     display: grid;
     grid-template-columns: 1fr;
