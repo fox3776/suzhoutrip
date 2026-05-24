@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>苏州周末旅行手册</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="book-shell">
+      <section class="cover-panel">
+        <div class="brand-badge">SUZHOU</div>
+        <div class="cover-copy">
+          <p class="eyebrow"><span>★</span> 2026.05.30 - 05.31</p>
+          <h1>苏州周末旅行手册</h1>
+        </div>
+        <div class="room-board" aria-label="住宿分配">
+          <article class="room-card">
+            <span>ROOM 1</span>
+            <strong>bobo / frank</strong>
+            <small>民宿卧室 1</small>
+          </article>
+          <article class="room-card">
+            <span>ROOM 2</span>
+            <strong>yuki / 橘子</strong>
+            <small>民宿卧室 2</small>
+          </article>
+          <article class="room-card">
+            <span>ROOM 3</span>
+            <strong>小童 / 学霸</strong>
+            <small>民宿卧室 3</small>
+          </article>
+          <article class="room-card">
+            <span>SOLO</span>
+            <strong>浩哥</strong>
+            <small>民宿单间</small>
+          </article>
+          <article class="room-card">
+            <span>HOME</span>
+            <strong>狐狸 / snow</strong>
+            <small>自己家</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="planner-grid">
+        <section class="traveler-panel" aria-label="选择朋友">
+          <div class="traveler-list" id="travelerList"></div>
+        </section>
+
+        <section class="story-panel">
+          <div class="story-caption" id="storyCaption"></div>
+          <article class="story-viewer" id="storyViewer" aria-label="人物分镜">
+            <button class="story-hit story-prev" type="button" id="storyPrev" aria-label="上一张"></button>
+            <div class="story-frame" id="storyFrame"></div>
+            <button class="story-hit story-next" type="button" id="storyNext" aria-label="下一张"></button>
+          </article>
+        </section>
+
+        <section class="map-panel">
+          <div class="paper-map image-map" id="paperMap" aria-label="苏州手绘地图">
+            <img class="map-base-image" src="./assets/map.png" alt="苏州手绘地图" />
+
+            <button class="map-hotspot" style="--x: 15%; --y: 14%" data-place="苏州站" aria-label="苏州站"></button>
+            <button class="map-hotspot" style="--x: 31%; --y: 32%" data-place="民宿" aria-label="民宿"></button>
+            <button class="map-hotspot" style="--x: 17%; --y: 55%" data-place="西园寺素面" aria-label="西园寺素面"></button>
+            <button class="map-hotspot" style="--x: 17%; --y: 64%" data-place="太湖雪" aria-label="太湖雪"></button>
+            <button class="map-hotspot" style="--x: 32%; --y: 65%" data-place="Masa台式小店" aria-label="Masa台式小店"></button>
+            <button class="map-hotspot" style="--x: 48%; --y: 65%" data-place="祥鑫" aria-label="祥鑫"></button>
+            <button class="map-hotspot" style="--x: 62%; --y: 65%" data-place="九十叶抹茶店" aria-label="九十叶抹茶店"></button>
+            <button class="map-hotspot" style="--x: 76%; --y: 65%" data-place="花无缺非遗绒花店" aria-label="花无缺非遗绒花店"></button>
+            <button class="map-hotspot" style="--x: 91%; --y: 65%" data-place="兴兴藏书羊肉" aria-label="兴兴藏书羊肉"></button>
+
+            <div class="avatar-pin" id="avatarPin">
+              <span id="avatarFace">bo</span>
+            </div>
+
+            <aside class="map-photo-panel" id="mapPhotoPanel" aria-live="polite">
+              <button class="photo-close" type="button" id="photoClose" aria-label="关闭照片">×</button>
+              <p class="photo-kicker">PLACE PHOTO</p>
+              <h2 id="photoTitle">选择地图地点</h2>
+              <div class="photo-grid" id="photoGrid">
+                <p class="photo-empty">点击地图上的红色热区查看实拍照片。</p>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
